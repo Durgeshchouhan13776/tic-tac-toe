@@ -1,3 +1,7 @@
+#include <stdio.h> 
+#include <stdbool.h>
+
+
 char board[3][3]; /*board is assumed to be declared glabaly*/
 
 //Initialize the game board with empty spaces with the help of for loop
