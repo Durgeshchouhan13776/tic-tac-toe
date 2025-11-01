@@ -1,0 +1,60 @@
+#include "game.h"  // Include the game header file which likely contains function prototypes and global variable declarations
+
+// --- Global Variables ---
+char board[3][3];        // 2D array representing the 3x3 Tic-Tac-Toe game board
+char currentPlayer = 'X'; // Variable to track the current player ('X' starts the game)
+
+// --- Reset the board ---
+void resetBoard() {
+    for (int i = 0; i < 3; i++)          // Loop through each row
+        for (int j = 0; j < 3; j++)      // Loop through each column in the current row
+            board[i][j] = ' ';           // Set each cell to a space character to indicate it's empty
+}
+
+// --- Validate move ---
+int isValidMove(int row, int col) {
+    if (row < 0 || row >= 3 || col < 0 || col >= 3) return 0; // Check if the given row and column are within board boundaries
+    if (board[row][col] != ' ') return 0;                     // Check if the selected cell is already occupied
+    return 1;                                                 // Return 1 (true) if move is valid
+}
+
+// --- Make a move ---
+void makeMove(int row, int col) {
+    board[row][col] = currentPlayer;  // Place the current player's symbol ('X' or 'O') in the specified cell
+}
+
+// --- Switch player ---
+char switchPlayer(char player) {
+    return (player == 'X') ? 'O' : 'X';  // Return 'O' if current player is 'X', otherwise return 'X'
+}
+
+// --- Check for a winner ---
+int checkWin() {
+    // --- Check all rows ---
+    for (int i = 0; i < 3; i++) { 
+        if (board[i][0] == currentPlayer &&          // Check if the first cell of the row matches the current player
+            board[i][1] == currentPlayer &&          // Check if the second cell of the row matches the current player
+            board[i][2] == currentPlayer)            // Check if the third cell of the row matches the current player
+            return 1;                                // If all match, the current player wins
+
+        // --- Check all columns ---
+        if (board[0][i] == currentPlayer &&          // Check if the first cell of the column matches the current player
+            board[1][i] == currentPlayer &&          // Check if the second cell of the column matches the current player
+            board[2][i] == currentPlayer)            // Check if the third cell of the column matches the current player
+            return 1;                                // If all match, the current player wins
+    }
+
+    // --- Check main diagonal (top-left to bottom-right) ---
+    if (board[0][0] == currentPlayer &&              // Check first cell of diagonal
+        board[1][1] == currentPlayer &&              // Check middle cell of diagonal
+        board[2][2] == currentPlayer)                // Check last cell of diagonal
+        return 1;                                    // If all match, the current player wins
+
+    // --- Check anti-diagonal (top-right to bottom-left) ---
+    if (board[0][2] == currentPlayer &&              // Check top-right cell
+        board[1][1] == currentPlayer &&              // Check middle cell
+        board[2][0] == currentPlayer)                // Check bottom-left cell
+        return 1;                                    // If all match, the current player wins
+
+    return 0;                                        // If no winning condition is met, return 0 (no winner yet)
+}
