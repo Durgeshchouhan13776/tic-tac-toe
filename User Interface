@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include "game.h"
+
+int main() {
+    int row, col, moves = 0;
+    int winner = 0;
+    char result = ' ';
+
+    resetBoard();
+
+    while (1) {
+        drawBoard();
+        getUserMove(&row, &col);
+
+        if (!isValidMove(row, col)) {
+            printf("Invalid move. Try again.\n");
+            continue;
+        }
+
+        makeMove(row, col);
+        moves++;
+
+        winner = checkWin();
+        if (winner == 1) {
+            drawBoard();
+            result = currentPlayer;
+            showResult(result);
+            break;
+        } else if (moves == 9) {
+            drawBoard();
+            result = 'D'; // Draw
+            showResult(result);
+            break;
+        }
+
+        currentPlayer = switchPlayer(currentPlayer);
+    }
+
+    return 0;
+}
+
+// --- Draw the Tic Tac Toe board ---
+void drawBoard() {
+    printf("\n  1   2   3\n");
+    for (int i = 0; i < 3; i++) {
+        printf("%d ", i + 1);
+        for (int j = 0; j < 3; j++) {
+            printf(" %c ", board[i][j]);
+            if (j < 2) printf("|");
+        }
+        printf("\n");
+        if (i < 2) printf("  ---+---+---\n");
+    }
+    printf("\n");
+}
+
+// --- Get user input ---
+void getUserMove(int *row, int *col) {
+    printf("Player %c, enter your move (row and column: 1-3): ", currentPlayer);
+    scanf("%d %d", row, col);
+    (*row)--; // Convert to 0-based index
+    (*col)--;
+}
+
+// --- Show the final result ---
+void showResult(char result) {
+    if (result == 'D')
+        printf("It's a draw! 🤝\n");
+    else
+        printf("Player %c wins! 🎉\n", result);
+}
