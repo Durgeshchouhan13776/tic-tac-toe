@@ -1,0 +1,23 @@
+#include <stdio.h>      // Include standard input/output library for printf() and scanf()
+#include "game.h"       // Include custom header file containing function prototypes and global variables
+
+int main() {
+    int row, col, moves = 0;     // Variables to store the user's chosen row/column and count total moves made
+    int winner = 0;              // Flag variable to indicate if a winner has been found (1 = win, 0 = no win)
+    char result = ' ';           // Variable to store the result of the game ('X', 'O', or 'D' for draw)
+
+    resetBoard();                // Initialize the board by setting all cells to empty spaces
+
+    while (1) {                  // Infinite game loop (breaks when win or draw occurs)
+        drawBoard();             // Display the current state of the board
+        getUserMove(&row, &col); // Ask the current player for their move (input row and column)
+
+        if (!isValidMove(row, col)) {           // Check if the chosen move is valid
+            printf("Invalid move. Try again.\n"); // Print error if invalid move (cell taken or out of range)
+            continue;                             // Skip the rest of the loop and ask for input again
+        }
+
+        makeMove(row, col);       // Place the current player's mark ('X' or 'O') on the board
+        moves++;                  // Increment total number of moves made so far
+
+        winner = che
