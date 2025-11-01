@@ -20,4 +20,53 @@ int main() {
         makeMove(row, col);       // Place the current player's mark ('X' or 'O') on the board
         moves++;                  // Increment total number of moves made so far
 
-        winner = che
+        winner = checkWin();      // Check if the current move caused a win
+        if (winner == 1) {        // If there’s a winner
+            drawBoard();          // Show the final board state
+            result = currentPlayer; // Record which player won ('X' or 'O')
+            showResult(result);   // Display the winning message
+            break;                // End the game loop
+        } else if (moves == 9) {  // If all 9 cells are filled (no empty spaces left)
+            drawBoard();          // Show final board state
+            result = 'D';         // Set result to 'D' for draw
+            showResult(result);   // Display draw message
+            break;                // End the game loop
+        }
+
+        currentPlayer = switchPlayer(currentPlayer); // Switch turn to the other player
+    }
+
+    return 0;                     // Exit program successfully
+}
+
+// --- Draw the Tic Tac Toe board ---
+void drawBoard() {
+    printf("\n  1   2   3\n");       // Print column headers
+    for (int i = 0; i < 3; i++) {     // Loop through each row
+        printf("%d ", i + 1);         // Print row number (1-based for user readability)
+        for (int j = 0; j < 3; j++) { // Loop through each cell in the current row
+            printf(" %c ", board[i][j]); // Print the cell content ('X', 'O', or space)
+            if (j < 2) printf("|");      // Print vertical divider between cells
+        }
+        printf("\n");                   // Move to next line after row is printed
+        if (i < 2) printf("  ---+---+---\n"); // Print horizontal divider between rows
+    }
+    printf("\n");                       // Print an extra newline for spacing
+}
+
+// --- Get user input ---
+void getUserMove(int *row, int *col) {
+    printf("Player %c, enter your move (row and column: 1-3): ", currentPlayer);
+    scanf("%d %d", row, col);   // Read two integers from user input for row and column
+    (*row)--;                   // Convert from 1-based (user input) to 0-based index for array
+    (*col)--;                   // Same conversion for column
+}
+
+// --- Show the final result ---
+void showResult(char result) {
+    if (result == 'D')                      // If result is 'D', it's a draw
+        printf("It's a draw! 🤝\n");        // Display draw message
+    else                                    // Otherwise, there is a winner
+        printf("Player %c wins! 🎉\n", result); // Announce which player won
+}
+
